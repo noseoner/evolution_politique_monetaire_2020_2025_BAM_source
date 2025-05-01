@@ -1,0 +1,32 @@
+# Création d'un graphique plus détaillé avec annotations et styles améliorés
+plt.figure(figsize=(14, 7))
+
+# Tracer les courbes
+plt.plot(df["Date"], df["Taux directeur"], marker='o', linestyle='-', linewidth=2, label="Taux directeur", color="blue")
+plt.plot(df["Date"], df["Ratio de réserve obligatoire"], marker='s', linestyle='--', linewidth=2, label="Ratio de réserve obligatoire", color="green")
+plt.plot(df["Date"], df["Rémunération de la réserve"], marker='^', linestyle='-.', linewidth=2, label="Rémunération de la réserve", color="red")
+
+# Ajouter des annotations sur les points clés (ex. crises, hausses majeures)
+highlight_dates = {
+    "17/03/2020": "Début COVID",
+    "22/12/2022": "Reprise des hausses",
+    "20/03/2025": "Assouplissement récent"
+}
+for date_str, label in highlight_dates.items():
+    date = pd.to_datetime(date_str, dayfirst=True)
+    taux = df.loc[df["Date"] == date, "Taux directeur"].values[0]
+    plt.annotate(label, (date, taux), textcoords="offset points", xytext=(0,10), ha='center', fontsize=9, color="black")
+
+# Mise en forme du graphique
+plt.title("Évolution détaillée des instruments de politique monétaire (2020–2025)", fontsize=16, weight='bold')
+plt.xlabel("Date", fontsize=12)
+plt.ylabel("Taux (%)", fontsize=12)
+plt.grid(True, linestyle='--', alpha=0.7)
+plt.legend(fontsize=10)
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+# Enregistrement du graphique détaillé
+detailed_graph_path = "/mnt/data/evolution_politique_monetaire_detail.png"
+plt.savefig(detailed_graph_path)
+detailed_graph_path
